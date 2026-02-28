@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Portfolio of Mohammed Aghil Puthiyottil — Software Engineer & ML Researcher">
 
+  <!-- Prevent browser scroll restoration so intro always plays from top -->
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  </script>
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -395,7 +401,7 @@
 <footer id="contact">
   <div class="container text-center">
     <h2 class="section-heading" data-aos="fade-up">Get In Touch</h2>
-    <p class="contact-sub" data-aos="fade-up" data-aos-delay="100">I'm currently open to new opportunities. Let's connect!</p>
+    <p class="contact-sub" data-aos="fade-up" data-aos-delay="100">I'm always  open to new challenges. Let's connect!</p>
     <div class="social-links" data-aos="fade-up" data-aos-delay="200">
       <a href="https://github.com/MohammedAghil" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
         <i class="bi bi-github"></i>
@@ -425,12 +431,22 @@
       return;
     }
 
+    window.scrollTo(0, 0);
     document.body.style.overflow = 'hidden';
 
     var photoCol  = document.querySelector('.hero-photo-col');
     var nameGroup = document.querySelector('.hero-name-group');
+    var heroName  = document.querySelector('.hero-name');
     var subtitle  = document.querySelector('.hero-subtitle');
     var cta       = document.querySelector('.btn-gradient');
+
+    // Name lines for typing effect
+    var lines = ['Mohammed Aghil', 'Puthiyottil'];
+
+    // Preserve hero-name layout size before clearing text
+    var hnRect = heroName.getBoundingClientRect();
+    heroName.style.minWidth  = hnRect.width  + 'px';
+    heroName.style.minHeight = hnRect.height + 'px';
 
     // Measure natural positions (hero is already in flow, page at scroll 0)
     var pR = photoCol.getBoundingClientRect();
@@ -443,6 +459,9 @@
     var pTY = cy - (pR.top  + pR.height / 2);
     var nTX = cx - (nR.left + nR.width  / 2);
     var nTY = cy - (nR.top  + nR.height / 2);
+
+    // Clear name text after measuring
+    heroName.innerHTML = '';
 
     // Start state — elements centred, hidden; subtitle/CTA hidden
     photoCol.style.transition  = 'none';
@@ -467,37 +486,77 @@
       photoCol.style.transform  = 'translate(' + pTX + 'px,' + pTY + 'px) scale(1)';
     }, 200);
 
-    // Phase 2 — name fades in at viewport centre (1300 ms)
+    // Phase 2 — greeting appears, name types in letter by letter (1300 ms)
     setTimeout(function () {
-      nameGroup.style.transition = 'opacity 0.7s ease';
+      nameGroup.style.transition = 'opacity 0.3s ease';
       nameGroup.style.opacity    = '1';
+
+      var currentText = document.createTextNode('');
+      heroName.appendChild(currentText);
+      var lineIdx = 0, charIdx = 0;
+
+      function typeChar() {
+        if (lineIdx >= lines.length) return;
+        if (charIdx < lines[lineIdx].length) {
+          currentText.textContent += lines[lineIdx][charIdx];
+          charIdx++;
+          setTimeout(typeChar, 45);
+        } else {
+          lineIdx++;
+          charIdx = 0;
+          if (lineIdx < lines.length) {
+            heroName.appendChild(document.createElement('br'));
+            currentText = document.createTextNode('');
+            heroName.appendChild(currentText);
+            setTimeout(typeChar, 45);
+          }
+        }
+      }
+      typeChar();
     }, 1300);
 
-    // Phase 3 — photo slides right, name slides left to natural positions (2500 ms)
+    // Phase 3 — photo slides right, name slides left to natural positions (2700 ms)
     setTimeout(function () {
       photoCol.style.transition  = 'transform 1.2s cubic-bezier(0.65,0,0.35,1)';
       photoCol.style.transform   = 'translate(0,0) scale(1)';
       nameGroup.style.transition = 'transform 1.2s cubic-bezier(0.65,0,0.35,1)';
       nameGroup.style.transform  = 'translate(0,0)';
-    }, 2500);
+    }, 2700);
 
-    // Phase 4 — subtitle + CTA fade in (3750 ms)
+    // Phase 4 — subtitle + CTA fade in (3950 ms)
     setTimeout(function () {
       subtitle.style.transition = 'opacity 0.45s ease';
       subtitle.style.opacity    = '1';
       cta.style.transition      = 'opacity 0.45s ease';
       cta.style.opacity         = '1';
-    }, 3750);
+    }, 3950);
 
-    // Done — strip all inline styles, unlock scroll (4250 ms)
+    // Done — strip all inline styles, unlock scroll (4500 ms)
     setTimeout(function () {
       photoCol.style.cssText  = '';
       nameGroup.style.cssText = '';
       subtitle.style.cssText  = '';
       cta.style.cssText       = '';
+      heroName.style.minWidth  = '';
+      heroName.style.minHeight = '';
       document.body.style.overflow = '';
       AOS.init({ duration: 800, once: true, offset: 80 });
-    }, 4250);
+    }, 4500);
+  })();
+
+  // Section divider line animation on scroll
+  (function () {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('line-visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('section:not(:last-of-type)').forEach(function (s) {
+      observer.observe(s);
+    });
   })();
 
   // Navbar blur on scroll
@@ -510,7 +569,7 @@
 
   // Typewriter effect
   (function () {
-    var titles = ['SDE II at Amazon AWS', 'Full-Stack Developer', 'ML Enthusiast', 'Problem Solver'];
+    var titles = ['SDE II at Amazon AWS', 'Full-Stack Developer', 'AI-Augmented Developer', 'Problem Solver'];
     var el = document.getElementById('typewriter');
     var titleIndex = 0, charIndex = 0, deleting = false;
 
