@@ -702,6 +702,10 @@ section {
   grid-column: span 2;
 }
 
+.cat-full {
+  grid-column: 1 / -1;
+}
+
 /* ---- Per-category colour tokens ---- */
 .cat-lang {
   --cat-glow-color:   rgba(0, 212, 255, 0.25);
@@ -816,8 +820,13 @@ section {
 }
 
 .skill-icon {
-  width: 15px;
-  height: 15px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  max-width: 16px;
+  max-height: 16px;
   object-fit: contain;
   flex-shrink: 0;
 }
