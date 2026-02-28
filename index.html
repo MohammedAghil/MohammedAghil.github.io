@@ -638,6 +638,33 @@
       requestAnimationFrame(tick);
     })();
   })();
+
+  // Scroll-reactive heading depth (subtle)
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var headings = Array.from(document.querySelectorAll('.section-heading'));
+    if (!headings.length) return;
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    function update() {
+      var vh = window.innerHeight || 1;
+      headings.forEach(function (h) {
+        var r = h.getBoundingClientRect();
+        var centerDelta = (r.top + r.height / 2) - (vh / 2);
+        var normalized = clamp(centerDelta / vh, -1, 1);
+        var y = (-normalized * 7).toFixed(2);
+        var glow = (1 + (1 - Math.abs(normalized)) * 0.35).toFixed(3);
+        h.style.transform = 'translate3d(0,' + y + 'px,0)';
+        h.style.filter = 'brightness(' + glow + ')';
+      });
+      requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+  })();
 </script>
 
 </body>
