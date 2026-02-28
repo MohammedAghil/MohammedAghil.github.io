@@ -763,6 +763,24 @@ section {
   --cat-pill-border:  rgba(56, 189, 248, 0.22);
   --cat-pill-core-bg: rgba(56, 189, 248, 0.18);
 }
+.cat-distributed {
+  --cat-glow-color:   rgba(20, 184, 166, 0.25);
+  --cat-border-color: rgba(20, 184, 166, 0.45);
+  --cat-shadow-color: rgba(20, 184, 166, 0.08);
+  --cat-accent:       #14b8a6;
+  --cat-pill-bg:      rgba(20, 184, 166, 0.08);
+  --cat-pill-border:  rgba(20, 184, 166, 0.22);
+  --cat-pill-core-bg: rgba(20, 184, 166, 0.18);
+}
+.cat-testing {
+  --cat-glow-color:   rgba(244, 63, 94, 0.25);
+  --cat-border-color: rgba(244, 63, 94, 0.45);
+  --cat-shadow-color: rgba(244, 63, 94, 0.08);
+  --cat-accent:       #f43f5e;
+  --cat-pill-bg:      rgba(244, 63, 94, 0.08);
+  --cat-pill-border:  rgba(244, 63, 94, 0.22);
+  --cat-pill-core-bg: rgba(244, 63, 94, 0.18);
+}
 
 /* ---- Category header ---- */
 .cat-header {
