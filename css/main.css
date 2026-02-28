@@ -810,6 +810,16 @@ section {
   border-radius: 50px;
   transition: background 0.2s, color 0.2s, transform 0.2s, border-color 0.2s;
   cursor: default;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.skill-icon {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .skill-pill.pill-core {
