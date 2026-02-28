@@ -745,14 +745,14 @@ section {
   --cat-pill-border:  rgba(16, 185, 129, 0.22);
   --cat-pill-core-bg: rgba(16, 185, 129, 0.18);
 }
-.cat-ml {
-  --cat-glow-color:   rgba(251, 146, 60, 0.25);
-  --cat-border-color: rgba(251, 146, 60, 0.45);
-  --cat-shadow-color: rgba(251, 146, 60, 0.08);
-  --cat-accent:       #fb923c;
-  --cat-pill-bg:      rgba(251, 146, 60, 0.08);
-  --cat-pill-border:  rgba(251, 146, 60, 0.22);
-  --cat-pill-core-bg: rgba(251, 146, 60, 0.18);
+.cat-ai {
+  --cat-glow-color:   rgba(139, 92, 246, 0.25);
+  --cat-border-color: rgba(139, 92, 246, 0.45);
+  --cat-shadow-color: rgba(139, 92, 246, 0.08);
+  --cat-accent:       #8b5cf6;
+  --cat-pill-bg:      rgba(139, 92, 246, 0.08);
+  --cat-pill-border:  rgba(139, 92, 246, 0.22);
+  --cat-pill-core-bg: rgba(139, 92, 246, 0.18);
 }
 .cat-cloud {
   --cat-glow-color:   rgba(56, 189, 248, 0.25);
