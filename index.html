@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+<div id="scroll-progress" aria-hidden="true"></div>
 
 <!-- ======= Navbar ======= -->
 <nav class="navbar navbar-expand-md fixed-top" id="mainNav">
@@ -161,6 +162,7 @@
 
 <!-- ======= Skills ======= -->
 <section id="skills">
+  <div class="skills-portrait-bridge" aria-hidden="true"></div>
   <div class="container">
     <h2 class="section-heading text-center" data-aos="fade-up">Technical Skills</h2>
     <p class="section-sub text-center" data-aos="fade-up" data-aos-delay="80">A snapshot of my technical toolkit</p>
@@ -324,8 +326,8 @@
         <div class="glass-card timeline-card">
           <div class="d-flex align-items-start gap-3">
             <div class="exp-logos-stack">
-              <img src="images/aws.svg" class="exp-logo-svg" alt="AWS">
-              <img src="images/opensearch.svg" class="exp-logo-svg" alt="OpenSearch">
+              <img src="images/aws.svg" class="exp-logo-svg exp-logo-aws" alt="AWS">
+              <img src="images/opensearch.svg" class="exp-logo-svg exp-logo-opensearch" alt="OpenSearch">
             </div>
             <div>
               <h3 class="exp-title">Software Development Engineer II</h3>
@@ -345,8 +347,8 @@
         <div class="glass-card timeline-card">
           <div class="d-flex align-items-start gap-3">
             <div class="exp-logos-stack">
-              <img src="images/aws.svg" class="exp-logo-svg" alt="AWS">
-              <img src="images/aurora.svg" class="exp-logo-svg" alt="Amazon Aurora">
+              <img src="images/aws.svg" class="exp-logo-svg exp-logo-aws" alt="AWS">
+              <img src="images/aurora.svg" class="exp-logo-svg exp-logo-aurora" alt="Amazon Aurora">
             </div>
             <div>
               <h3 class="exp-title">Software Development Engineer</h3>
@@ -369,7 +371,7 @@
             <div>
               <h3 class="exp-title">Graduate Teaching Assistant</h3>
               <p class="exp-company">UNC Charlotte</p>
-              <p class="exp-desc">Built the Machine Learning pipeline in Python for Real-Time Edge Video Analytics for Multicamera Privacy-Aware Pedestrian Tracking (REVAMP2T). The pipeline uses EfficientHRNet, PLROSNet, and DeepSort for multi-camera re-identification and action detection. Gained hands-on experience with OpenCV, Pandas, NumPy, Matplotlib, Scikit-learn, Seaborn, and PyTorch.</p>
+              <p class="exp-desc">Served as a Graduate Teaching Assistant for the undergraduate Network Based Application Development course. Conducted lab sessions, explained core concepts such as client-server architecture, socket programming, REST APIs, and web communication protocols, and guided students through hands-on assignments and mini-projects. Held office hours, provided one-on-one debugging support, evaluated assignments and exams with constructive feedback, and collaborated with the instructor to prepare course materials and improve student outcomes.</p>
             </div>
           </div>
         </div>
@@ -664,6 +666,139 @@
     }
 
     requestAnimationFrame(update);
+  })();
+
+  // Top scroll progress beam
+  (function () {
+    var bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+    var root = document.documentElement;
+
+    function update() {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var progress = max > 0 ? (window.scrollY / max) : 0;
+      bar.style.transform = 'scaleX(' + Math.max(0, Math.min(1, progress)) + ')';
+      root.style.setProperty('--scroll-ratio', progress.toFixed(4));
+      root.style.setProperty('--hero-parallax', Math.min(28, window.scrollY * 0.06).toFixed(2) + 'px');
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  // Cursor spotlight ambience
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var root = document.documentElement;
+    var x = window.innerWidth * 0.5;
+    var y = window.innerHeight * 0.3;
+    var tx = x;
+    var ty = y;
+
+    window.addEventListener('mousemove', function (e) {
+      tx = e.clientX;
+      ty = e.clientY;
+    }, { passive: true });
+
+    (function tick() {
+      x += (tx - x) * 0.12;
+      y += (ty - y) * 0.12;
+      root.style.setProperty('--mouse-x', x.toFixed(1) + 'px');
+      root.style.setProperty('--mouse-y', y.toFixed(1) + 'px');
+      requestAnimationFrame(tick);
+    })();
+  })();
+
+  // Magnetic hover for CTA + social icons
+  (function () {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    var nodes = document.querySelectorAll('.btn-gradient, .social-link');
+    nodes.forEach(function (node) {
+      node.addEventListener('mousemove', function (e) {
+        var r = node.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+        var dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+        node.style.setProperty('--mag-x', (dx * 11).toFixed(2) + 'px');
+        node.style.setProperty('--mag-y', (dy * 11).toFixed(2) + 'px');
+      });
+      node.addEventListener('mouseleave', function () {
+        node.style.setProperty('--mag-x', '0px');
+        node.style.setProperty('--mag-y', '0px');
+      });
+    });
+  })();
+
+  // 3D reactive tilt on skill cards
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    var cards = document.querySelectorAll('.skill-cat');
+    cards.forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        var rx = (-py * 7).toFixed(2);
+        var ry = (px * 10).toFixed(2);
+        card.style.setProperty('--card-rx', rx + 'deg');
+        card.style.setProperty('--card-ry', ry + 'deg');
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.setProperty('--card-rx', '0deg');
+        card.style.setProperty('--card-ry', '0deg');
+      });
+    });
+  })();
+
+  // Reverse-scroll floating illusion (sections rise toward you)
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var sections = Array.from(document.querySelectorAll('section:not(#hero)'));
+    if (!sections.length) return;
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    var ticking = false;
+    function render() {
+      var vh = window.innerHeight || 1;
+      sections.forEach(function (section) {
+        var r = section.getBoundingClientRect();
+        var center = r.top + (r.height * 0.5);
+        var dist = (center - (vh * 0.78)) / vh; // + below viewport center, - above
+        var absDist = Math.abs(dist);
+        var y = clamp(dist * 176, -68, 122);
+        var focus = 1 - Math.min(1, Math.abs(dist) * 1.05);
+        var scale = 1 + (focus * 0.03);
+        // Keep section crisp while in focus; start defocus only during transition.
+        var defocus = clamp((absDist - 0.48) / 0.34, 0, 1);
+        var blur = Math.pow(defocus, 1.2) * 2.8;
+        var sat = 1 - (Math.pow(defocus, 1.1) * 0.22);
+        var opacity = 1 - (Math.pow(defocus, 1.15) * 0.18);
+
+        section.style.setProperty('--float-y', y.toFixed(2) + 'px');
+        section.style.setProperty('--float-scale', scale.toFixed(4));
+        section.style.setProperty('--section-focus', Math.max(0, focus).toFixed(4));
+        section.style.setProperty('--section-defocus', defocus.toFixed(4));
+        section.style.setProperty('--section-blur', blur.toFixed(3) + 'px');
+        section.style.setProperty('--section-sat', sat.toFixed(4));
+        section.style.setProperty('--section-opacity', opacity.toFixed(4));
+      });
+      ticking = false;
+    }
+
+    function requestRender() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(render);
+    }
+
+    window.addEventListener('scroll', requestRender, { passive: true });
+    window.addEventListener('resize', requestRender);
+    requestRender();
   })();
 </script>
 
