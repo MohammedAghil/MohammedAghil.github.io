@@ -1396,16 +1396,48 @@ footer#contact .section-heading {
    Contact / Footer
    =========================== */
 footer#contact {
+  position: relative;
+  overflow: visible;
   background: rgba(0, 0, 0, 0.25);
   border-top: 1px solid var(--glass-border);
   padding: 5rem 0 3rem;
   box-shadow: inset 0 20px 45px rgba(0, 0, 0, 0.35);
 }
 
+footer#contact .container {
+  position: relative;
+  z-index: 2;
+}
+
 .contact-sub {
   color: var(--text-secondary);
   font-size: 1.05rem;
   margin-bottom: 2.5rem;
+}
+
+.contact-portrait-wrap {
+  position: absolute;
+  right: clamp(-24px, -1vw, 8px);
+  bottom: 0;
+  width: clamp(260px, 30vw, 470px);
+  height: auto;
+  aspect-ratio: 1056 / 1349;
+  margin: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.contact-portrait {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  filter: grayscale(0.08) contrast(1.06) drop-shadow(0 24px 44px rgba(0, 0, 0, 0.5));
 }
 
 .social-links {
@@ -1527,6 +1559,15 @@ footer#contact {
   .d-flex.align-items-start.gap-3 {
     flex-direction: column;
     align-items: flex-start !important;
+  }
+
+  .contact-portrait-wrap {
+    right: -120px;
+    bottom: 0;
+    width: 66vw;
+    height: auto;
+    aspect-ratio: 1056 / 1349;
+    opacity: 0.42;
   }
 
   #skills {
